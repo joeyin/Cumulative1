@@ -1,4 +1,4 @@
-﻿@model IEnumerable<School.Models.Teacher>
+﻿@model IEnumerable<School.Models.Course>
 @{
     ViewBag.Title = "List";
 }
@@ -20,18 +20,18 @@
 }
 
 <h2>List</h2>
-<p>This page should be showing information about all teachers</p>
+<p>This page should be showing information about all classes</p>
 
 <div id="containerlist">
-    <h4>Find a teacher (by name, hiredate, salary)</h4>
+    <h4>Find a class</h4>
     <form method="get" class="row g-3">
         <div class="col-auto">
             <select name="n" id="n" class="form-select">
                 <option value="">-</option>
-                <option value="teacherfname">First Name</option>
-                <option value="teacherlname">Last Nname</option>
-                <option value="hiredate">Hire Date(yyyy-MM-DD 00:00:00)</option>
-                <option value="salary">Salary</option>
+                <option value="classcode">Class Code</option>
+                <option value="startdate">Start Date</option>
+                <option value="finishdate">Finish Date(yyyy-MM-DD)</option>
+                <option value="classname">Class Name</option>
             </select>
         </div>
         <div class="col-auto">
@@ -49,13 +49,13 @@
 
     <br />
 
-    <h2>List of Teachers</h2>
+    <h2>List of Classes</h2>
     <ul class="list-group">
-        @foreach (var teacher in Model)
+        @foreach (var course in Model)
         {
             <li class="list-group-item">
-                <a href="/Teacher/Show/@teacher.TeacherId">@teacher.TeacherFname @teacher.TeacherLname</a>
+                <a href="/Course/Show/@course.ClassId">@course.ClassName (@course.ClassCode)</a>
             </li>
         }
     </ul>
-</div>
+    </div>

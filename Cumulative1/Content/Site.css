@@ -11,3 +11,20 @@ select,
 textarea {
     max-width: 280px;
 }
+
+body {
+    background: #ececec;
+}
+
+.navbar {
+    background: #002a68;
+}
+
+a {
+    color: #3c3c3c;
+    text-decoration: unset;
+}
+
+a:hover {
+    color: #000;
+}

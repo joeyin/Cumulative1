@@ -4,39 +4,37 @@ using System.Web.Mvc;
 
 namespace School.Controllers
 {
-    public class TeacherController : Controller
+    public class StudentController : Controller
     {
-        // GET: Teacher
+        // GET: Student
         public ActionResult Index()
         {
             return View(); //Default
         }
 
-        //GET : /Teacher/List
+        //GET : /Student/List
         public ActionResult List()
         {
-            TeacherDataController controller = new TeacherDataController();
+            StudentDataController controller = new StudentDataController();
 
             TempData["n"] = Request.QueryString["n"];
             TempData["v"] = Request.QueryString["v"];
 
-            IEnumerable<Teacher> Teachers = controller.ListTeachers(
+            IEnumerable<Student> Students = controller.ListStudents(
                 Request.QueryString["n"],
                 Request.QueryString["v"]
             );
 
-            return View(Teachers);
+            return View(Students);
         }
 
-        //GET : /Teacher/Show/{id}
+        //GET : /Student/Show/{id}
         public ActionResult Show(int id)
         {
-            TeacherDataController controller = new TeacherDataController();
-            Teacher NewTeacher = controller.FindTeacher(id);
+            StudentDataController controller = new StudentDataController();
+            Student NewStudent = controller.FindStudent(id);
 
-            return View(NewTeacher);
+            return View(NewStudent);
         }
-
-        
     }
 }

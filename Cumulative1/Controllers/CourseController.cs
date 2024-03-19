@@ -1,42 +1,43 @@
 ﻿using School.Models;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 
 namespace School.Controllers
 {
-    public class TeacherController : Controller
+    public class CourseController : Controller
     {
-        // GET: Teacher
+        // GET: Class
         public ActionResult Index()
         {
             return View(); //Default
         }
 
-        //GET : /Teacher/List
+        //GET : /Class/List
         public ActionResult List()
         {
-            TeacherDataController controller = new TeacherDataController();
+            CourseDataController controller = new CourseDataController();
 
             TempData["n"] = Request.QueryString["n"];
             TempData["v"] = Request.QueryString["v"];
 
-            IEnumerable<Teacher> Teachers = controller.ListTeachers(
+            IEnumerable<Course> Classes = controller.ListClasses(
                 Request.QueryString["n"],
                 Request.QueryString["v"]
             );
 
-            return View(Teachers);
+            return View(Classes);
         }
 
-        //GET : /Teacher/Show/{id}
+        //GET : /Class/Show/{id}
         public ActionResult Show(int id)
         {
-            TeacherDataController controller = new TeacherDataController();
-            Teacher NewTeacher = controller.FindTeacher(id);
+            CourseDataController controller = new CourseDataController();
+            Course NewClass = controller.FindClass(id);
 
-            return View(NewTeacher);
+            return View(NewClass);
         }
-
-        
     }
 }

@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace School.Controllers
 {
-    public class TeacherDataController : Controller
+    public class CourseDataController : Controller
     {
         // The database context class which allows us to access our MySQL Database.
         private SchoolDbContext School = new SchoolDbContext();
@@ -20,7 +20,7 @@ namespace School.Controllers
         /// A list of teachers (first names and last names)
         /// </returns>
         [HttpGet]
-        public IEnumerable<Teacher> ListTeachers(string n, string v)
+        public IEnumerable<Course> ListClasses(string n, string v)
         {
             //Create an instance of a connection
             MySqlConnection Conn = School.AccessDatabase();
@@ -32,7 +32,7 @@ namespace School.Controllers
             MySqlCommand cmd = Conn.CreateCommand();
 
             //SQL QUERY
-            cmd.CommandText = "SELECT * FROM teachers";
+            cmd.CommandText = "SELECT * FROM classes";
 
             if (n != null && v != null)
             {
@@ -48,34 +48,36 @@ namespace School.Controllers
             MySqlDataReader ResultSet = cmd.ExecuteReader();
 
             //Create an empty list of Authors
-            List<Teacher> Teachers = new List<Teacher> { };
+            List<Course> Classes = new List<Course> { };
 
             //Loop Through Each Row the Result Set
             while (ResultSet.Read())
             {
                 //Access Column information by the DB column name as an index
-                int TeacherId = (int)ResultSet["teacherid"];
-                string TeacherFname = ResultSet["teacherfname"].ToString();
-                string TeacherLname = ResultSet["teacherlname"].ToString();
-                string EmployeeNumber = ResultSet["employeenumber"].ToString();
-                string HireDate = ResultSet["hiredate"].ToString();
+                int ClassId = int.Parse(ResultSet["classid"].ToString());
+                string ClassCode = ResultSet["classcode"].ToString();
+                string TeacherId = ResultSet["teacherid"].ToString();
+                string StartDate = ResultSet["startdate"].ToString();
+                string FinishDate = ResultSet["finishdate"].ToString();
+                string ClassName = ResultSet["classname"].ToString();
 
-                Teacher NewTeacher = new Teacher();
-                NewTeacher.TeacherId = TeacherId;
-                NewTeacher.TeacherFname = TeacherFname;
-                NewTeacher.TeacherLname = TeacherLname;
-                NewTeacher.EmployeeNumber = EmployeeNumber;
-                NewTeacher.HireDate = HireDate;
+                Course NewCourse = new Course();
+                NewCourse.ClassId = ClassId;
+                NewCourse.ClassCode = ClassCode;
+                NewCourse.TeacherId = TeacherId;
+                NewCourse.StartDate = StartDate;
+                NewCourse.FinishDate = FinishDate;
+                NewCourse.ClassName = ClassName;
 
-                //Add the Teacher Name to the List
-                Teachers.Add(NewTeacher);
+                //Add the Student Name to the List
+                Classes.Add(NewCourse);
             }
 
             //Close the connection between the MySQL Database and the WebServer
             Conn.Close();
 
-            //Return the final list of teacher names
-            return Teachers;
+            //Return the final list of author names
+            return Classes;
         }
 
 
@@ -85,9 +87,9 @@ namespace School.Controllers
         /// <param name="id">The author primary key</param>
         /// <returns>An author object</returns>
         [HttpGet]
-        public Teacher FindTeacher(int id)
+        public Course FindClass(int id)
         {
-            Teacher NewTeacher = new Teacher();
+            Course NewCourse = new Course();
 
             //Create an instance of a connection
             MySqlConnection Conn = School.AccessDatabase();
@@ -99,7 +101,7 @@ namespace School.Controllers
             MySqlCommand cmd = Conn.CreateCommand();
 
             //SQL QUERY
-            cmd.CommandText = "SELECT * From teachers t JOIN classes c ON c.teacherid = t.teacherid where t.teacherid = " + id;
+            cmd.CommandText = "SELECT * From classes c JOIN teachers t ON t.teacherid = c.teacherid where c.classid = " + id;
 
             //Debug.WriteLine("sql:" + cmd.CommandText);
 
@@ -109,27 +111,25 @@ namespace School.Controllers
             while (ResultSet.Read())
             {
                 //Access Column information by the DB column name as an index
-                int TeacherId = (int)ResultSet["teacherid"];
-                string TeacherFname = ResultSet["teacherfname"].ToString();
-                string TeacherLname = ResultSet["teacherlname"].ToString();
-                string EmployeeNumber = ResultSet["employeenumber"].ToString();
-                string HireDate = DateTime.Parse(ResultSet["hiredate"].ToString()).ToString("yyyy-MM-dd");
-                float Salary = float.Parse(ResultSet["salary"].ToString());
+                int ClassId = int.Parse(ResultSet["classid"].ToString());
                 string ClassCode = ResultSet["classcode"].ToString();
+                string TeacherId = ResultSet["teacherid"].ToString();
+                string TeacherFName = ResultSet["teacherfname"].ToString();
+                string StartDate = ResultSet["startdate"].ToString();
+                string FinishDate = ResultSet["finishdate"].ToString();
                 string ClassName = ResultSet["classname"].ToString();
 
-                NewTeacher.TeacherId = TeacherId;
-                NewTeacher.TeacherFname = TeacherFname;
-                NewTeacher.TeacherLname = TeacherLname;
-                NewTeacher.EmployeeNumber = EmployeeNumber;
-                NewTeacher.HireDate = HireDate;
-                NewTeacher.Salary = Salary;
-                NewTeacher.ClassCode = ClassCode;
-                NewTeacher.ClassName = ClassName;
+                NewCourse.ClassId = ClassId;
+                NewCourse.ClassCode = ClassCode;
+                NewCourse.TeacherId = TeacherId;
+                NewCourse.TeacherFName = TeacherFName;
+                NewCourse.StartDate = StartDate;
+                NewCourse.FinishDate = FinishDate;
+                NewCourse.ClassName = ClassName;
             }
 
 
-            return NewTeacher;
+            return NewCourse;
         }
     }
 }
